@@ -16,10 +16,10 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err) => {
     if (err) {
-      throw err;
+      return console.error(err);
     }
     console.log('MONGODB CONNECTION ESTABILSHED');
   }
 );
 
-app.use('/users', require('./routes/user'));
+//app.use('/users', require('./routes/user'));

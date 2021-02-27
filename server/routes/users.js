@@ -13,7 +13,7 @@ router.post('/register', async (req, res) => {
     let { email, password, passwordCheck, displayName } = req.body;
 
     if (!email || !password || !passwordCheck) {
-      return res.status(400).json({ msg: 'Not all fields have been entered' });
+      res.status(400).json({ msg: 'Not all fields have been entered' });
     }
 
     if (password.length < 5) {
@@ -88,5 +88,49 @@ router.post('/login', async (req, res) => {
 });
 
 // delete
+
+router.delete('/delete', auth, async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.user);
+    res.json(deletedUser);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+});
+
+// token validity
+
+router.post('/tokenIsValid', async (req, res) => {
+  try {
+    const token = req.header('x-auth-token');
+    if (!token) {
+      return res.json(false);
+    }
+
+    const verified = jwt.verify(token, process.env.SECRET);
+
+    if (!verified) {
+      return res.json(false);
+    }
+
+    const user = await User.findById(verified.id);
+
+    if (!user) {
+      return res.json(false);
+    }
+
+    return res.json(true);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+});
+
+router.get('/', auth, async (req, res) => {
+  const user = User.findById(req.user);
+  res.json({
+    displayName: user.displayName,
+    id: user._id,
+  });
+});
 
 module.exports = router;

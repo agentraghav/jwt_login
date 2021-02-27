@@ -22,4 +22,4 @@ mongoose.connect(
   }
 );
 
-//app.use('/users', require('./routes/user'));
+app.use('/users', require('./routes/user'));

@@ -52,4 +52,41 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// Login
+
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ msg: 'Not all fields are filled' });
+    }
+
+    const checkUser = await User.find({ email: email });
+
+    if (!checkUser) {
+      return res.status(400).json({ msg: "This user doesn't exist" });
+    }
+
+    const isMatch = await bcrypt.compare(password, checkUser.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ id: checkUser._id }, process.env.SECRET);
+
+    res.json({
+      toke,
+      user: {
+        id: checkUser._id,
+        displayName: checkUser.displayName,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// delete
+
 module.exports = router;

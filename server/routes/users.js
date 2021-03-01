@@ -28,7 +28,7 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ msg: "Password doesn't match" });
     }
 
-    const existingUser = User.findOne({ email: email });
+    const existingUser = await User.findOne({ email: email });
     if (existingUser) {
       return res
         .status(400)
@@ -63,7 +63,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ msg: 'Not all fields are filled' });
     }
 
-    const checkUser = await User.find({ email: email });
+    const checkUser = await User.findOne({ email: email });
 
     if (!checkUser) {
       return res.status(400).json({ msg: "This user doesn't exist" });

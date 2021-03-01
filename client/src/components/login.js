@@ -16,7 +16,7 @@ export default function Login() {
   const { setUserData } = useContext(UserContext);
 
   const submit = async (e) => {
-    e.prevent.default();
+    e.preventDefault();
     try {
       const loginUser = { email, password };
       const loginResponse = await axios.post(
@@ -30,6 +30,7 @@ export default function Login() {
       localStorage.setItem('auth-token', loginResponse.data.token);
       history.push('/');
     } catch (err) {
+      console.log(err);
       err.response.data.msg && setError(err.response.data.msg);
     }
   };

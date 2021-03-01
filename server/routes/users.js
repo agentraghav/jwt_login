@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const auth = require('../middleware/auth');
-
+const notAuth = require('../middleware/notAuth');
 // resgiter post
 
 router.post('/register', async (req, res) => {

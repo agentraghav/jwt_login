@@ -8,7 +8,7 @@ import Header from './components/header';
 import Home from './components/home';
 import Register from './components/register';
 import Login from './components/login';
-import UserContext from './context/userContext';
+import UserContext from './components/userContext';
 import './App.css';
 
 function App() {

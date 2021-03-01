@@ -1,13 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-app.use(express.static('client/build'));
 
 const PORT = process.env.PORT || 5000;
 
@@ -23,5 +22,12 @@ mongoose.connect(
     console.log('MONGODB CONNECTION ESTABILSHED');
   }
 );
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 app.use('/users', require('./routes/users'));

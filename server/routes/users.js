@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const auth = require('../middleware/auth');
-const notAuth = require('../middleware/notAuth');
+
 // resgiter post
 
 router.post('/register', async (req, res) => {
@@ -133,6 +133,12 @@ router.get('/', auth, async (req, res) => {
     displayName: user.displayName,
     id: user._id,
   });
+});
+
+//
+
+router.use(function (req, res) {
+  res.sendFile(path.join(__dirname, '../../client/build/index.html'));
 });
 
 module.exports = router;
